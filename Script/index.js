@@ -1,9 +1,10 @@
 const cardcontainer = document.querySelector("#AllCards");
-cardcontainer.innerHTML = allCardsHTML(data);
-  
+
+//printCards 
+
 function allCardsHTML(data) {
     let cardsHTML = "";
-    const events = data.events;
+    const events = data;
     const length = events.length;
   
     for (let i = 0; i < length; i++) {
@@ -26,20 +27,48 @@ function allCardsHTML(data) {
     return cardsHTML;
   }
 
-
+//error
 // const categorizeEvent = document.querySelector("#eventsDate");
-//  categorizeEvent.innerHTML = filterEventsDate(data);
-//  console.log(data);
+// categorizeEvent.innerHTML = filterEventsDate(data);
+
+ console.log(data);
+
+function filterEvents(data){
+  let eventsP = [];   
+  let eventsU = [];  
+
+  data.events.forEach(event => {
+    if(event.date < data.currentDate){
+      eventsP.push(event) //7 cards pasadas.
+    }else{
+      eventsU.push(event) //7 cards futuras.
+    } 
+    });
+    if(document.title === "Past Events" && eventsP.length > 0){
+      return allCardsHTML(eventsP)
+    }else if(document.title === "Upcoming Events" && eventsU.length > 0){
+      return allCardsHTML(eventsU)
+    }
+}
+
+
 // function filterEventsDate(data) { 
-//     let eventsP = "";   
-//     let eventsU = "";  
+//   console.log(data);
+//     let eventsP = [];   
+//     let eventsU = [];  
 //     const currentDate = data.currentDate;
+
 //     data.events.forEach(event => {
 //       const eventDate = event.date;
-//       if (eventDate < currentDate) {  
-//         return eventsP += allCardsHTML(data) 
+//       console.log(eventDate);
+//       if (eventDate < currentDate) { 
+//         eventsP = allCardsHTML(data)
+//         // console.log(allCardsHTML(data)); 
+//          return eventsP
 //       } else {  
-//         return eventsU += allCardsHTML(data)
+//        console.log('bghywfte');
 //       }
 //     });
 //   }
+
+//checkboxes y search
