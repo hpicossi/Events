@@ -1,6 +1,49 @@
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: "Comic Neue", cursive;
-  }
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Comic Neue", cursive;
+}
+
+ main{
+  min-height: 60vh;
+} 
+
+footer{
+  height: 15vh;
+}
+
+.navbar>.container-fluid{
+  display: flex; 
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+
+
+}
+.navbar-collapse{
+flex-grow:0 !important;
+}
+
+.nav2{
+  background-color: rgb(181, 181, 181);
+}
+
+#navbar2{
+  /* background-color: aqua; */
+  display: flex; 
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  filter: invert(108%);
+}
+
+.form-check-input{
+  border: 1px solid black;
+  box-shadow: 2px 2px 2px black;
+}
