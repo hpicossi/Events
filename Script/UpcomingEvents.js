@@ -1,7 +1,7 @@
-const cardPastcontainer = document.querySelector("#eventsDate");
-cardPastcontainer.innerHTML = filterPastCardsHTML(data);
+const cardUpcomingcontainer = document.querySelector("#eventsDate");
+cardUpcomingcontainer.innerHTML = filterUpcomingCardsHTML(data);
   
-function filterPastCardsHTML(data) {
+function filterUpcomingCardsHTML(data) {
     let cardsHTML = "";
     const events = data.events;
     const length = events.length;
