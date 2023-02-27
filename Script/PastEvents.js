@@ -1,14 +1,17 @@
-const cardcontainer = document.querySelector("#AllCards");
-cardcontainer.innerHTML = allCardsHTML(data);
+const cardPastcontainer = document.querySelector("#eventsDate");
+cardPastcontainer.innerHTML = filterPastCardsHTML(data);
   
-function allCardsHTML(data) {
+function filterPastCardsHTML(data) {
     let cardsHTML = "";
     const events = data.events;
     const length = events.length;
-  
+    const currentDate = data.currentDate;
+    
     for (let i = 0; i < length; i++) {
       const event = events[i];
-      cardsHTML += `
+      const eventDate = event.date;
+      if(eventDate < currentDate){
+        cardsHTML += `
         <div class="card" style="width: 14rem;">
           <div class="card-body">
             <h4 class="card-title">${event.name}</h4>
@@ -22,24 +25,7 @@ function allCardsHTML(data) {
           </div>
         </div>
       `;
+      }     
     }
     return cardsHTML;
   }
-
-
-// const categorizeEvent = document.querySelector("#eventsDate");
-//  categorizeEvent.innerHTML = filterEventsDate(data);
-//  console.log(data);
-// function filterEventsDate(data) { 
-//     let eventsP = "";   
-//     let eventsU = "";  
-//     const currentDate = data.currentDate;
-//     data.events.forEach(event => {
-//       const eventDate = event.date;
-//       if (eventDate < currentDate) {  
-//         return eventsP += allCardsHTML(data) 
-//       } else {  
-//         return eventsU += allCardsHTML(data)
-//       }
-//     });
-//   }
