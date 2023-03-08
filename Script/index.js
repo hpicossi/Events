@@ -1,37 +1,24 @@
 const cardcontainer = document.querySelector("#AllCards");
-
-//printCards 
+const dataEvents = data.events;
 
 function allCardsHTML(data) {
-    let cardsHTML = "";
-    const events = data;
-    const length = events.length;
-  
-    for (let i = 0; i < length; i++) {
-      const event = events[i];
-      cardsHTML += `
-        <div class="card" style="width: 14rem;">
-          <div class="card-body">
-            <h4 class="card-title">${event.name}</h4>
-            <img src="${event.image}" class="card-img-top" alt="...">       
-            <h5 class="card-title">${event.category}</h5>
-            <p class="card-text">${event.description}</p>
-            <p class="card-text">Place: ${event.place}</p>
-            <p class="card-text">Capacity: ${event.capacity}</p>
-            <p class="card-text">Date: ${event.date}</p>
-            <h5>Price:$ ${event.price}</h5>
-          </div>
+  let cardsHTML = "";
+  data.forEach(event => {
+    cardsHTML += `
+      <div class="card" style="width: 14rem;">
+        <div class="card-body">
+          <h4 class="card-title">${event.name}</h4>
+          <img src="${event.image}" class="card-img-top" alt="...">       
+          <p class="card-text">${event.description}</p>         
+          <p class="card-text">Date: ${event.date}</p>
+          <h5>Price:$ ${event.price}</h5>
+          <a href="./Details.html?id=${event._id}" class="btn btn-primary">Go somewhere</a>
         </div>
-      `;
-    }
-    return cardsHTML;
-  }
-
-//error
-// const categorizeEvent = document.querySelector("#eventsDate");
-// categorizeEvent.innerHTML = filterEventsDate(data);
-
- console.log(data);
+      </div>
+    `;
+  });
+  return cardsHTML;
+}
 
 function filterEvents(data){
   let eventsP = [];   
@@ -51,24 +38,34 @@ function filterEvents(data){
     }
 }
 
+const searchFilter = document.getElementById("searchInput");
+let searchF = "";//serchF es lo que escribo en el input
+searchFilter.addEventListener("keyup",(event)=>{
+  searchF = event.target.value;
+  
+  // console.log(searchF);
+  filter();
+});
 
-// function filterEventsDate(data) { 
-//   console.log(data);
-//     let eventsP = [];   
-//     let eventsU = [];  
-//     const currentDate = data.currentDate;
+// const checkcekFilter = document.getElementById("searchInput");
+// let searchF = "";//serchF es lo que escribo en el input
+// searchFilter.addEventListener("keyup",(event)=>{
+//   searchF = event.target.value;
+  
+//   console.log(searchF);
+//   filter();
+// });
 
-//     data.events.forEach(event => {
-//       const eventDate = event.date;
-//       console.log(eventDate);
-//       if (eventDate < currentDate) { 
-//         eventsP = allCardsHTML(data)
-//         // console.log(allCardsHTML(data)); 
-//          return eventsP
-//       } else {  
-//        console.log('bghywfte');
-//       }
-//     });
-//   }
+function filter(){ 
+  let datafilter = []; // en este array se van a guardar los eventos que coincidia con searchF
 
-//checkboxes y search
+  if(searchF !== ""){
+    datafilter.push(...dataEvents.filter((event)=>event.name.toLowerCase().includes(searchF.trim().toLowerCase()))
+    );  
+    cardcontainer.innerHTML = allCardsHTML(datafilter);
+  }
+   else{
+     datafilter.push(...dataEvents)
+     cardcontainer.innerHTML = allCardsHTML(dataEvents);
+   }
+}
