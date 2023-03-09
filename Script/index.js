@@ -1,5 +1,6 @@
 const cardcontainer = document.querySelector("#AllCards");
 const dataEvents = data.events;
+const categoriesconteiner = document.querySelector("#categories");
 
 function allCardsHTML(data) {
   let cardsHTML = "";
@@ -22,7 +23,7 @@ function allCardsHTML(data) {
 
 function filterEvents(data){
   let eventsP = [];   
-  let eventsU = [];  
+  let eventsU = [];
 
   data.events.forEach(event => {
     if(event.date < data.currentDate){
@@ -42,30 +43,97 @@ const searchFilter = document.getElementById("searchInput");
 let searchF = "";//serchF es lo que escribo en el input
 searchFilter.addEventListener("keyup",(event)=>{
   searchF = event.target.value;
-  
-  // console.log(searchF);
   filter();
 });
-
-// const checkcekFilter = document.getElementById("searchInput");
-// let searchF = "";//serchF es lo que escribo en el input
-// searchFilter.addEventListener("keyup",(event)=>{
-//   searchF = event.target.value;
-  
-//   console.log(searchF);
-//   filter();
-// });
 
 function filter(){ 
   let datafilter = []; // en este array se van a guardar los eventos que coincidia con searchF
 
-  if(searchF !== ""){
+  let CBMarcados = obtenerCheckBoxsMarcados(data.events);
+
+  if (searchF != "" && CBMarcados.length <= 0) {
+    cardcontainer.innerHTML = "";
     datafilter.push(...dataEvents.filter((event)=>event.name.toLowerCase().includes(searchF.trim().toLowerCase()))
     );  
     cardcontainer.innerHTML = allCardsHTML(datafilter);
   }
-   else{
-     datafilter.push(...dataEvents)
+  if (searchF == "" && CBMarcados.length <= 0) {
+    cardcontainer.innerHTML = "";
+    datafilter.push(...dataEvents)
      cardcontainer.innerHTML = allCardsHTML(dataEvents);
-   }
+  }
+  if (searchF != "" && CBMarcados.length > 0) {
+    cardcontainer.innerHTML = "";
+    var dataFilterAux = [];
+    dataFilterAux.push(...dataEvents.filter((event)=>event.name.toLowerCase().includes(searchF.trim().toLowerCase())));
+    CBMarcados.forEach(categoria => {
+      datafilter.push(dataFilterAux.filter((event)=>event.category.toLowerCase().includes(categoria.trim().toLowerCase())));
+      cardcontainer.innerHTML = allCardsHTML(datafilter[0]);
+    });
+  }
+  if (searchF === "" && CBMarcados.length > 0) {
+    cardcontainer.innerHTML = "";
+    CBMarcados.forEach(categoria => {
+      datafilter.push(...dataEvents.filter((event)=>event.category.toLowerCase().includes(categoria.trim().toLowerCase())));
+      cardcontainer.innerHTML = allCardsHTML(datafilter);
+    });
+  }
+  
+}
+
+function obtenerCheckBoxsMarcados() {
+  let listaCategorias = obtenerCategorias(data.events);
+  let listaCategoriasSeleccionadas = [];
+
+  listaCategorias.forEach(categoria => {
+    var containerCB = document.getElementById(categoria);
+    if(containerCB.checked) {
+      listaCategoriasSeleccionadas.push(categoria)
+    }
+  });
+  return listaCategoriasSeleccionadas;
+}
+
+function obtenerCategorias(events) {
+  const data = [];
+  events.forEach(event => {
+    data.push(event.category);
+  });
+
+  const dataArr = new Set(data);
+
+  let categorias = [...dataArr];
+
+  return categorias;
+}
+
+function allCheckBoxs(events) {
+  let listCheckBoxs = "";
+  let listaCategorias = obtenerCategorias(events);
+  listaCategorias.forEach(categoria => {
+    listCheckBoxs += `
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" id="${categoria}" value="option1">
+      <label class="form-check-label" for="inlineCheckbox1">${categoria}</label>
+    </div>
+    `;
+  });
+  return listCheckBoxs;
+}
+
+function filterCategories(categoria) {
+  let datafilter = []; // en este array se van a guardar los eventos que coincidia con searchF
+
+  let CBMarcados = obtenerCheckBoxsMarcados(data.events);
+
+  if (CBMarcados.length > 0) {
+    CBMarcados.forEach(categoria => {
+      datafilter.push(...dataEvents.filter((event)=>event.category.toLowerCase().includes(categoria.trim().toLowerCase())));
+      cardcontainer.innerHTML = allCardsHTML(datafilter);
+    });
+  }
+  else {
+    datafilter.push(...dataEvents)
+    cardcontainer.innerHTML = allCardsHTML(dataEvents);
+  }
 }
