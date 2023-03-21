@@ -26,10 +26,6 @@ footer{
 flex-grow:0 !important;
 }
 
-.nav2{
-  background-color: rgb(181, 181, 181);
-}
-
 #navbar2{
   /* background-color: aqua; */
   display: flex; 
@@ -47,3 +43,57 @@ flex-grow:0 !important;
   border: 1px solid black;
   box-shadow: 2px 2px 2px black;
 }
+
+
+/* --- */
+
+
+ .card {
+  max-width: 20rem;
+  margin: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img-top {
+  height: 12rem;
+  object-fit: cover;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+}
+
+.card-subtitle {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+}
+
+/* ---- */
+

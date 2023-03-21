@@ -8,9 +8,15 @@ async function getEventsCards() {
   const json = await response.json();
 
   const events = json.events;
-  const Dates = json.currentDate; 
+  const Dates = json.currentDate;
+  
+  const arrayPast = events.filter(event => event.date < Dates)
+  const arrayUp = events.filter(event => event.date > Dates)
 
   function allCardsHTML(events) {
+    // if(events.length == 0){
+    //   return cardcontainer.innerHTML = `<p>Hola</p>`
+    // }
     let cardsHTML = "";
     events.forEach(event => {
       cardsHTML += `
@@ -28,7 +34,25 @@ async function getEventsCards() {
     });
     return cardsHTML;
   }
-  cardcontainer.innerHTML = allCardsHTML(events);
+
+  function filterEvents(events){
+    let eventsP = [];   
+    let eventsU = [];
+
+    events.forEach(event => {
+      if(event.date < Dates){
+        eventsP.push(event) //7 cards pasadas.
+      }else{
+        eventsU.push(event) //7 cards futuras.
+      } 
+      });
+      if(document.title === "Past Events" && eventsP.length > 0){
+        return allCardsHTML(eventsP)
+      }else if(document.title === "Upcoming Events" && eventsU.length > 0){
+        return allCardsHTML(eventsU)
+      }
+  }
+  cardcontainer.innerHTML = filterEvents(events);
 
   const searchFilter = document.getElementById("searchInput");
   let searchF = "";//serchF es lo que escribo en el input
@@ -48,20 +72,22 @@ async function getEventsCards() {
 
 
   function filter(){ 
+    
     let datafilter = []; // en este array se van a guardar los eventos que coincidia con searchF
-
     let CBMarcados = obtenerCheckBoxsMarcados(events);
 
     if (searchF != "" && CBMarcados.length <= 0) {
       cardcontainer.innerHTML = "";
       datafilter.push(...events.filter((event)=>event.name.toLowerCase().includes(searchF.trim().toLowerCase()))
       );  
-      cardcontainer.innerHTML = allCardsHTML(datafilter);
+      cardcontainer.innerHTML = filterEvents(datafilter);
+      
     }
     if (searchF == "" && CBMarcados.length <= 0) {
       cardcontainer.innerHTML = "";
       datafilter.push(...events)
-      cardcontainer.innerHTML = allCardsHTML(events);
+      cardcontainer.innerHTML = filterEvents(events);
+
     }
     if (searchF != "" && CBMarcados.length > 0) {
       cardcontainer.innerHTML = "";
@@ -69,15 +95,17 @@ async function getEventsCards() {
       dataFilterAux.push(...events.filter((event)=>event.name.toLowerCase().includes(searchF.trim().toLowerCase())));
       CBMarcados.forEach(categoria => {
         datafilter.push(dataFilterAux.filter((event)=>event.category.toLowerCase().includes(categoria.trim().toLowerCase())));
-        cardcontainer.innerHTML = allCardsHTML(datafilter[0]);
+        cardcontainer.innerHTML = filterEvents(datafilter[0]);
       });
+  
     }
-    if (searchF === "" && CBMarcados.length > 0) {
+    if (searchF == "" && CBMarcados.length > 0) {
       cardcontainer.innerHTML = "";
       CBMarcados.forEach(categoria => {
         datafilter.push(...events.filter((event)=>event.category.toLowerCase().includes(categoria.trim().toLowerCase())));
-        cardcontainer.innerHTML = allCardsHTML(datafilter);
+        cardcontainer.innerHTML = filterEvents(datafilter);
       });
+
     }
     
   }
@@ -115,7 +143,7 @@ async function getEventsCards() {
     listaCategorias.forEach(categoria => {
       listCheckBoxs += `
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="${categoria}" value="option1">
+        <input class="form-check-input" type="checkbox" id="${categoria}">
         <label class="form-check-label" for="inlineCheckbox1">${categoria}</label>
       </div>
       `;
